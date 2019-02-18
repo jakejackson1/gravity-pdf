@@ -187,7 +187,7 @@ class Router implements Helper\Helper_Interface_Actions, Helper\Helper_Interface
 	public function init() {
 
 		/* Set up our logger is not running via CLI (unit testing) */
-		$logger = new Helper\Helper_Logger( 'gravity-pdf', 'Gravity PDF' );
+		$logger    = new Helper\Helper_Logger( 'gravity-pdf', 'Gravity PDF' );
 		$this->log = $logger->get_logger();
 
 		/* Set up our form object */
@@ -384,7 +384,10 @@ class Router implements Helper\Helper_Interface_Actions, Helper\Helper_Interface
 	private function register_styles() {
 		$version = PDF_EXTENDED_VERSION;
 
-		wp_register_style( 'gfpdf_css_styles', PDF_PLUGIN_URL . 'dist/assets/css/gfpdf-styles.min.css', [ 'wp-color-picker', 'wp-jquery-ui-dialog' ], $version );
+		wp_register_style( 'gfpdf_css_styles', PDF_PLUGIN_URL . 'dist/assets/css/gfpdf-styles.min.css', [
+			'wp-color-picker',
+			'wp-jquery-ui-dialog',
+		], $version );
 		wp_register_style( 'gfpdf_css_admin_styles', PDF_PLUGIN_URL . 'dist/assets/css/gfpdf-admin-styles.min.css', [], $version );
 	}
 
@@ -418,8 +421,12 @@ class Router implements Helper\Helper_Interface_Actions, Helper\Helper_Interface
 			'wpdialogs',
 		];
 
-		wp_register_script( 'gfpdf_js_backbone', PDF_PLUGIN_URL . 'dist/assets/js/gfpdf-backbone.min.js', $pdf_backbone_dependancies, $version ); /* @TODO - remove backbone and use React */
-		wp_register_script( 'gfpdf_js_backbone_model_binder', PDF_PLUGIN_URL . 'bower_components/backbone.modelbinder/Backbone.ModelBinder.min.js', [ 'backbone', 'underscore' ], $version );
+		wp_register_script( 'gfpdf_js_backbone', PDF_PLUGIN_URL . 'dist/assets/js/gfpdf-backbone.min.js', $pdf_backbone_dependancies, $version );
+		/* @TODO - remove backbone and use React */
+		wp_register_script( 'gfpdf_js_backbone_model_binder', PDF_PLUGIN_URL . 'bower_components/backbone.modelbinder/Backbone.ModelBinder.min.js', [
+			'backbone',
+			'underscore',
+		], $version );
 
 		wp_register_script( 'gfpdf_js_entrypoint', PDF_PLUGIN_URL . 'dist/assets/js/app.bundle.min.js', [ 'jquery' ], $version );
 		wp_register_script( 'gfpdf_js_entries', PDF_PLUGIN_URL . 'dist/assets/js/gfpdf-entries.min.js', [ 'jquery' ], $version );
@@ -486,6 +493,7 @@ class Router implements Helper\Helper_Interface_Actions, Helper\Helper_Interface
 	public function tinymce_styles( $mceInit ) {
 		$style                    = "body#tinymce { max-width: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;}";
 		$mceInit['content_style'] = ( isset( $mceInit['content_style'] ) ) ? $mceInit['content_style'] . ' ' . $style : $style;
+
 		return $mceInit;
 	}
 
@@ -895,9 +903,9 @@ class Router implements Helper\Helper_Interface_Actions, Helper\Helper_Interface
 	 * @return void
 	 */
 	public function async_pdfs() {
-		$queue = new Helper\Helper_Pdf_Queue( $this->log );
+		$queue     = new Helper\Helper_Pdf_Queue( $this->log );
 		$model_pdf = $this->singleton->get_class( 'Model_PDF' );
-		$class = new Controller\Controller_Pdf_Queue( $queue, $model_pdf, $this->log );
+		$class     = new Controller\Controller_Pdf_Queue( $queue, $model_pdf, $this->log );
 
 		if ( $this->options->get_option( 'background_processing', 'Disable' ) === 'Enable' ) {
 			$class->init();

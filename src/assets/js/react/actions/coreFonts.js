@@ -78,6 +78,8 @@ export const clearConsole = () => {
 export const addToRetryList = (name) => {
   return {
     type: ADD_TO_RETRY_LIST,
+
+
     name
   }
 }
